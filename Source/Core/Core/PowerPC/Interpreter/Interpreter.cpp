@@ -20,6 +20,7 @@
 #include "Core/HW/CPU.h"
 #include "Core/PowerPC/Interpreter/ExceptionUtils.h"
 #include "Core/PowerPC/MMU.h"
+#include "Core/PowerPC/MiloTrace.h"
 #include "Core/PowerPC/PPCTables.h"
 #include "Core/PowerPC/PowerPC.h"
 #include "Core/System.h"
@@ -117,6 +118,12 @@ bool Interpreter::HandleFunctionHooking(u32 address)
 
 int Interpreter::SingleStepInner()
 {
+  // milo-trace W7: snapshot full ppcState (incl. ps[] both halves + GQRs) at the
+  // entry/exit of any traced function. No-op unless MILO_TRACE_OUT is set (OnStep
+  // self-gates after a one-time lazy init). Runs before the instruction at
+  // m_ppc_state.pc executes, so the entry/exit PC boundary is exact.
+  MiloTrace::OnStep(m_ppc_state, m_system.GetMemory());
+
   if (HandleFunctionHooking(m_ppc_state.pc))
   {
     UpdatePC();
