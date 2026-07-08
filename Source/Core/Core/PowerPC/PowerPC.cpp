@@ -27,6 +27,7 @@
 #include "Core/PowerPC/Interpreter/Interpreter.h"
 #include "Core/PowerPC/JitInterface.h"
 #include "Core/PowerPC/MMU.h"
+#include "Core/PowerPC/MiloTrace.h"
 #include "Core/PowerPC/PPCSymbolDB.h"
 #include "Core/System.h"
 
@@ -313,6 +314,7 @@ void PowerPCManager::ScheduleInvalidateCacheThreadSafe(u32 address)
 
 void PowerPCManager::Shutdown()
 {
+  MiloTrace::Shutdown();  // milo-trace W7: flush + close the .mtr capture file.
   CPUThreadConfigCallback::RemoveConfigChangedCallback(m_registered_config_callback_id);
   InjectExternalCPUCore(nullptr);
   m_system.GetJitInterface().Shutdown();

@@ -550,6 +550,9 @@ add_library(core
   PowerPC/JitInterface.h
   PowerPC/GDBStub.cpp
   PowerPC/GDBStub.h
+  PowerPC/MiloTrace.cpp
+  PowerPC/MiloTrace.h
+  PowerPC/MiloTrace_mtr_format.h
   PowerPC/MMU.cpp
   PowerPC/MMU.h
   PowerPC/PowerPC.cpp
